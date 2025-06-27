@@ -3,6 +3,7 @@ const router = express.Router();
 const { Task, User } = require("../database");
 const pg = require("pg");
 
+
 // TASK 4: Add the necessary routes here
 // This time, use your newly created Sequelize models instead of the dummy database
 
@@ -61,16 +62,16 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-// Create a new task
-// router.post("/", async (req, res) => {
-//   try {
-//     const task = req.body;
-//     const result = await pg.query("INSERT INTO tasks (n");
-//   } catch (err) {
-//     console.error(err);
-//     res.sendStatus(400);
-//   }
-// });
+//Create a new task
+router.post("/", async (req, res) => {
+  try {
+    const task = req.body;
+    const result = await pg.query("INSERT INTO tasks (n");
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(400);
+  }
+});
 
  module.exports = router;
 
