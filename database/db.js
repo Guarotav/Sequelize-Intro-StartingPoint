@@ -3,7 +3,7 @@ const pg = require("pg");
 
 
 const db = new Sequelize(
-  process.env.DATABASE_URL || "postgres://localhost:5432/todo_List",
+  process.env.DATABASE_URL || "postgres://localhost:5432/todo_list",
   {
     //logging: false, // comment this line to enable logging
   }

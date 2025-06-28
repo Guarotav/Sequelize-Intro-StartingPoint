@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const { Task, User } = require("../database");
-const pg = require("pg");
 
 
 // TASK 4: Add the necessary routes here
@@ -11,8 +10,9 @@ const pg = require("pg");
 router.get("/", async (req, res) => {
   // Replace this with your code!
   try {
-    const tasks = await pg.query("SELECT * FROM tasks");
-    res.send(tasks.rows);
+    //const tasks = await pg.query("SELECT * FROM tasks");
+    const tasks = await Task.findAll();
+    res.send(tasks);
     res.sendStatus(200);
   } catch (err) {
     console.error(err);
@@ -25,7 +25,7 @@ router.get("/:id", async (req, res) => {
   // Replace this with your code!
   try {
     const taskID = parseInt(req.params.id);
-    const task = await pg.query("SELECT * FROM tasks WHERE id = $1 ", [taskID]);
+    const task = await Task.findByPk(taskID);
     res.send(task);
     res.sendStatus(200);
   } catch (err) {
@@ -37,12 +37,10 @@ router.get("/:id", async (req, res) => {
 // Patch a task by id
 router.patch("/:id", async (req, res) => {
   try {
-    const taskID = parseInt(req.params.id);
+    const taskId = parseInt(req.params.id);
     const completed = req.body.completed;
-    const result = await pg.query(
-      "UPDATE tasks SET completed = $1 WHERE id = $2",
-      [completed, taskID]
-    );
+    const task = await Task.findByPk(taskId);
+    await task.update({completed: completed});
     res.sendStatus(200);
   } catch (err) {
     console.error(err);
@@ -54,7 +52,8 @@ router.patch("/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   try {
     const taskID = parseInt(req.params.id);
-    const result = await pg.query("DELETE FROM tasks WHERE id = $1", [taskID]);
+    const task =  await Task.findByPk(taskID);
+    await task.destroy();
     res.sendStatus(200);
   } catch (err) {
     console.error(err);
@@ -66,14 +65,15 @@ router.delete("/:id", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const task = req.body;
-    const result = await pg.query("INSERT INTO tasks (n");
+    await Task.create(task);
+    res.sendStatus(201);
   } catch (err) {
     console.error(err);
     res.sendStatus(400);
   }
 });
 
- module.exports = router;
+module.exports = router;
 
 // // TASK 5: Create a new routes file for users, and add as many routes as you see fit
 // // Don't forget to export the router, and import it into api/index.js

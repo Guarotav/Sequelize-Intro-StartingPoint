@@ -28,11 +28,11 @@ const Task = db.define("task", {
 
   },
 
-  user_ID: {
-    type: DataTypes.INTEGER,
-    allowNull: false, 
+  //user_ID: {
+  //   type: DataTypes.INTEGER,
+  //   allowNull: false, 
     
-  }
+  // }
 });
 
 module.exports = Task;
